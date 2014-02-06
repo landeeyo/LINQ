@@ -1,0 +1,8 @@
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\Db\sql\debug\Db.deploymanifest
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\Db\sql\debug\Db.dbschema
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\Db\obj\Debug\Db.dbschema
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\Db\sql\debug\linqtosql_Script.PreDeployment.sql
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\Db\sql\debug\linqtosql_Script.PostDeployment.sql
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\Db\sql\debug\linqtosql_Database.sqlsettings
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\Db\sql\debug\linqtosql_Database.sqldeployment
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\Db\sql\debug\linqtosql_Database.sqlcmdvars
