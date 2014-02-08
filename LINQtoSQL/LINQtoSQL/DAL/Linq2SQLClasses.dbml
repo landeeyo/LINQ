@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Linq2SQL" Class="Linq2SQLClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=WIN7NETDEV-PC;Initial Catalog=Linq2SQL;Persist Security Info=True;User ID=sa" SettingsObjectName="LINQtoSQL.Settings" SettingsPropertyName="Setting" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Person" Member="Persons">
+    <Type Name="Person">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="surname" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="firstname" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="addressId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Address_Person" Member="Address" ThisKey="addressId" OtherKey="id" Type="Address" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Country" Member="Countries">
+    <Type Name="Country">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Association Name="Country_Address" Member="Addresses" ThisKey="id" OtherKey="countryId" Type="Address" />
+    </Type>
+  </Table>
+  <Table Name="dbo.City" Member="Cities">
+    <Type Name="City">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="City_Address" Member="Addresses" ThisKey="id" OtherKey="cityId" Type="Address" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Address" Member="Addresses">
+    <Type Name="Address">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="buildingNumber" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="dwellingNumber" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="street" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="cityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="countryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Address_Person" Member="Persons" ThisKey="id" OtherKey="addressId" Type="Person" />
+      <Association Name="City_Address" Member="City" ThisKey="cityId" OtherKey="id" Type="City" IsForeignKey="true" />
+      <Association Name="Country_Address" Member="Country" ThisKey="countryId" OtherKey="id" Type="Country" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

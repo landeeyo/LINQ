@@ -2,3 +2,4 @@ C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\LINQtoSQL\bin\Debug\LINQtoSQ
 C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\LINQtoSQL\bin\Debug\LINQtoSQL.pdb
 C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\LINQtoSQL\obj\x86\Debug\LINQtoSQL.exe
 C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\LINQtoSQL\obj\x86\Debug\LINQtoSQL.pdb
+C:\Users\aleph\Documents\GitHub\LINQ\LINQ\LINQtoSQL\LINQtoSQL\bin\Debug\LINQtoSQL.exe.config
