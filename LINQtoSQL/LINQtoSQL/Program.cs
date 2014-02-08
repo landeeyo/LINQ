@@ -1,5 +1,6 @@
 ﻿using System;
 using LINQtoSQL.DAL;
+using System.Collections.Generic;
 
 namespace LINQtoSQL
 {
@@ -11,7 +12,10 @@ namespace LINQtoSQL
             Console.WriteLine("People with surname Joyce:");
             var person = Accessor.GetPersonBySurname("Joyce");
             ConsolePresentationHelper.WriteObject(person);
-            //List<Person> people = Accessor.GetPersonListByCountry("United Kingdom");
+            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine("All people from UK: ");
+            List<Person> people = Accessor.GetPersonListByCountry("United Kingdom");
+            ConsolePresentationHelper.WriteCollection(people);
             Console.ReadLine();
         }
     }
