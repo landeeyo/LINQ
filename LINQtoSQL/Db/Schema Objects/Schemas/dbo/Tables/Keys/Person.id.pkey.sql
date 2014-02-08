@@ -1,3 +1,3 @@
 ﻿ALTER TABLE [dbo].[Person]
-	ADD CONSTRAINT [id]
+	ADD CONSTRAINT [PersonIdPK]
 	PRIMARY KEY (id)

@@ -163,24 +163,116 @@ GO
 */
 
 GO
+PRINT N'Creating [dbo].[Address]...';
+
+
+GO
+CREATE TABLE [dbo].[Address] (
+    [id]             INT           IDENTITY (1, 1) NOT NULL,
+    [buildingNumber] INT           NOT NULL,
+    [dwellingNumber] INT           NOT NULL,
+    [street]         VARCHAR (100) NULL,
+    [cityId]         INT           NOT NULL,
+    [countryId]      INT           NOT NULL
+);
+
+
+GO
+PRINT N'Creating AddressIdPK...';
+
+
+GO
+ALTER TABLE [dbo].[Address]
+    ADD CONSTRAINT [AddressIdPK] PRIMARY KEY CLUSTERED ([id] ASC) WITH (ALLOW_PAGE_LOCKS = ON, ALLOW_ROW_LOCKS = ON, PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF, STATISTICS_NORECOMPUTE = OFF);
+
+
+GO
+PRINT N'Creating [dbo].[City]...';
+
+
+GO
+CREATE TABLE [dbo].[City] (
+    [id]   INT           IDENTITY (1, 1) NOT NULL,
+    [name] VARCHAR (100) NOT NULL
+);
+
+
+GO
+PRINT N'Creating CityIdPK...';
+
+
+GO
+ALTER TABLE [dbo].[City]
+    ADD CONSTRAINT [CityIdPK] PRIMARY KEY CLUSTERED ([id] ASC) WITH (ALLOW_PAGE_LOCKS = ON, ALLOW_ROW_LOCKS = ON, PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF, STATISTICS_NORECOMPUTE = OFF);
+
+
+GO
+PRINT N'Creating [dbo].[Country]...';
+
+
+GO
+CREATE TABLE [dbo].[Country] (
+    [id]   INT           IDENTITY (1, 1) NOT NULL,
+    [name] VARCHAR (100) NULL
+);
+
+
+GO
+PRINT N'Creating CountryIdPK...';
+
+
+GO
+ALTER TABLE [dbo].[Country]
+    ADD CONSTRAINT [CountryIdPK] PRIMARY KEY CLUSTERED ([id] ASC) WITH (ALLOW_PAGE_LOCKS = ON, ALLOW_ROW_LOCKS = ON, PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF, STATISTICS_NORECOMPUTE = OFF);
+
+
+GO
 PRINT N'Creating [dbo].[Person]...';
 
 
 GO
 CREATE TABLE [dbo].[Person] (
-    [id]       INT          IDENTITY (1, 1) NOT NULL,
-    [surname]  VARCHAR (50) NULL,
-    [firsname] VARCHAR (50) NULL
+    [id]        INT          IDENTITY (1, 1) NOT NULL,
+    [surname]   VARCHAR (50) NOT NULL,
+    [firstname] VARCHAR (50) NOT NULL,
+    [addressId] INT          NOT NULL
 );
 
 
 GO
-PRINT N'Creating id...';
+PRINT N'Creating PersonIdPK...';
 
 
 GO
 ALTER TABLE [dbo].[Person]
-    ADD CONSTRAINT [id] PRIMARY KEY CLUSTERED ([id] ASC) WITH (ALLOW_PAGE_LOCKS = ON, ALLOW_ROW_LOCKS = ON, PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF, STATISTICS_NORECOMPUTE = OFF);
+    ADD CONSTRAINT [PersonIdPK] PRIMARY KEY CLUSTERED ([id] ASC) WITH (ALLOW_PAGE_LOCKS = ON, ALLOW_ROW_LOCKS = ON, PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF, STATISTICS_NORECOMPUTE = OFF);
+
+
+GO
+PRINT N'Creating CityIdFK...';
+
+
+GO
+ALTER TABLE [dbo].[Address] WITH NOCHECK
+    ADD CONSTRAINT [CityIdFK] FOREIGN KEY ([cityId]) REFERENCES [dbo].[City] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+GO
+PRINT N'Creating CountryIdFK...';
+
+
+GO
+ALTER TABLE [dbo].[Address] WITH NOCHECK
+    ADD CONSTRAINT [CountryIdFK] FOREIGN KEY ([countryId]) REFERENCES [dbo].[Country] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+GO
+PRINT N'Creating AddressIdFK...';
+
+
+GO
+ALTER TABLE [dbo].[Person] WITH NOCHECK
+    ADD CONSTRAINT [AddressIdFK] FOREIGN KEY ([addressId]) REFERENCES [dbo].[Address] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 
 GO
@@ -206,11 +298,43 @@ Post-Deployment Script Template
 
 print 'Populating database tables...'
 
-insert into Person values('Caroll','Lewis');
-insert into Person values('Orwell','George');
-insert into Person values('Gibson','William');
-insert into Person values('Dick','Philip K.');
-insert into Person values('Mitchell','David');
+insert into City values('London');
+insert into City values('New York');
+insert into City values('Ottawa');
+insert into City values('Dublin');
+
+insert into Country values('United Kingdom');
+insert into Country values('USA');
+insert into Country values('Canada');
+insert into Country values('Ireland');
+
+insert into Address values(1,2,'Darwin Road',1,1);
+insert into Address values(6,4,'Windmill Road',1,1);
+insert into Address values(8,9,'Pleasant Park Road',3,3);
+insert into Address values(5,3,'LexingtonAvenue',2,2);
+insert into Address values(7,1,'Rothe Abbey',4,4);
+
+insert into Person values('Caroll','Lewis', 1);
+insert into Person values('Orwell','George', 2);
+insert into Person values('Gibson','William', 3);
+insert into Person values('Dick','Philip K.', 4);
+insert into Person values('Joyce','James', 5);
+
+GO
+PRINT N'Checking existing data against newly created constraints';
+
+
+GO
+USE [$(DatabaseName)];
+
+
+GO
+ALTER TABLE [dbo].[Address] WITH CHECK CHECK CONSTRAINT [CityIdFK];
+
+ALTER TABLE [dbo].[Address] WITH CHECK CHECK CONSTRAINT [CountryIdFK];
+
+ALTER TABLE [dbo].[Person] WITH CHECK CHECK CONSTRAINT [AddressIdFK];
+
 
 GO
 IF EXISTS (SELECT 1
