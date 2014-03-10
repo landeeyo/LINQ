@@ -16,6 +16,16 @@ namespace LINQtoSQL
             Console.WriteLine("All people from UK: ");
             List<Person> people = Accessor.GetPersonListByCountry("United Kingdom");
             ConsolePresentationHelper.WriteCollection(people);
+            Console.WriteLine("Adding person...");
+            Person p = new Person();
+            p.firstname = "Adam"; 
+            p.surname = "First";
+            p.addressId = person.addressId;
+            int personId = Accessor.InsertOrUpdatePerson(p);
+            Console.WriteLine("Person id: ", p.id);
+            Console.WriteLine("Updating person...");
+            p.firstname = "Mark";
+            Accessor.InsertOrUpdatePerson(p);
             Console.ReadLine();
         }
     }

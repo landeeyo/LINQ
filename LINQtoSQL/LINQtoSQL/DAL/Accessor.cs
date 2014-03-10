@@ -51,7 +51,44 @@ namespace LINQtoSQL.DAL
 
         #endregion
 
-        #region Linq2SQL queries
+        #region Linq2SQL queries 
+
+        #region Create
+
+        /// <summary>
+        /// Inserts or updates person
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
+        public static int InsertOrUpdatePerson(Person person)
+        {
+            var foundPerson = (from p in dc.Persons
+                     where p.id == person.id
+                     select p).SingleOrDefault();
+
+            int personId = -1;
+
+            if (foundPerson == null)
+            {
+                dc.Persons.InsertOnSubmit(person);
+                dc.Persons.Context.SubmitChanges();
+                personId = person.id;
+            }
+            else
+            {
+                foundPerson = person;
+                personId = foundPerson.id;
+                dc.SubmitChanges();
+            }
+
+            return personId;
+        }
+
+        //TODO Implement transactional insert/update
+
+        #endregion
+
+        #region Read
 
         /// <summary>
         /// Gets person by surname
@@ -80,6 +117,20 @@ namespace LINQtoSQL.DAL
                     where cntry.name == country
                     select person).ToList<Person>();
         }
+
+        #endregion
+
+        #region Update
+
+        //TODO
+
+        #endregion
+
+        #region Delete
+
+        //TODO
+
+        #endregion
 
         #endregion
     }
