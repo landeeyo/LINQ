@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
+using System.Transactions;
 
 namespace LINQtoSQL.DAL
 {
@@ -63,28 +64,58 @@ namespace LINQtoSQL.DAL
         public static int InsertOrUpdatePerson(Person person)
         {
             var foundPerson = (from p in dc.Persons
-                     where p.id == person.id
-                     select p).SingleOrDefault();
+                               where p.id == person.id
+                               select p).SingleOrDefault();
 
             int personId = -1;
 
             if (foundPerson == null)
             {
                 dc.Persons.InsertOnSubmit(person);
-                dc.Persons.Context.SubmitChanges();
                 personId = person.id;
             }
             else
             {
                 foundPerson = person;
                 personId = foundPerson.id;
-                dc.SubmitChanges();
             }
+            dc.SubmitChanges();
 
             return personId;
         }
 
-        //TODO Implement transactional insert/update
+        /// <summary>
+        /// Inserts or updates person (explicit transaction version)
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
+        public static int TransactionInsertOrUpdatePerson(Person person)
+        {
+            using (var transaction = new TransactionScope())
+            {
+                var foundPerson = (from p in dc.Persons
+                                   where p.id == person.id
+                                   select p).SingleOrDefault();
+
+                int personId = -1;
+
+                if (foundPerson == null)
+                {
+                    //INSERT
+                    dc.Persons.InsertOnSubmit(person);
+                    personId = person.id;
+                }
+                else
+                {
+                    //UPDATE
+                    foundPerson = person;
+                    personId = foundPerson.id;
+                }
+                dc.SubmitChanges();
+                transaction.Complete();
+                return personId;
+            }
+        }
 
         #endregion
 

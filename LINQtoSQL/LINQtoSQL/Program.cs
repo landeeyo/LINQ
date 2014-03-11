@@ -26,6 +26,8 @@ namespace LINQtoSQL
             Console.WriteLine("Updating person...");
             p.firstname = "Mark";
             Accessor.InsertOrUpdatePerson(p);
+            p.surname = "Second";
+            Accessor.TransactionInsertOrUpdatePerson(p);
             Console.ReadLine();
         }
     }
