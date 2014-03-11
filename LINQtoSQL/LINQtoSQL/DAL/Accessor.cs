@@ -2,6 +2,7 @@
 using System.Data.Linq;
 using System.Linq;
 using System.Transactions;
+using System;
 
 namespace LINQtoSQL.DAL
 {
@@ -52,7 +53,7 @@ namespace LINQtoSQL.DAL
 
         #endregion
 
-        #region Linq2SQL queries 
+        #region Linq2SQL queries
 
         #region Create
 
@@ -115,6 +116,44 @@ namespace LINQtoSQL.DAL
                 transaction.Complete();
                 return personId;
             }
+        }
+
+        /// <summary>
+        /// Inserts or updates person
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
+        public static int InsertConsistenceTest(Person person)
+        {
+            //LINQ to SQL should prevent data consistency
+            //suposedly between new Linq2SQLClassesDataContext();
+            //and dataContext.SubmitChanges(); transaction is created.
+            //This method tests it.
+            Linq2SQLClassesDataContext dataContext = new Linq2SQLClassesDataContext();
+
+            var foundPerson = (from p in dataContext.Persons
+                               where p.id == person.id
+                               select p).SingleOrDefault();
+
+            int personId = -1;
+
+            if (foundPerson == null)
+            {
+                dataContext.Persons.InsertOnSubmit(person);
+                personId = person.id;
+            }
+            else
+            {
+                foundPerson = person;
+                personId = foundPerson.id;
+            }
+            if (person.firstname == "throw")
+            {
+                throw new Exception("Transaction test exception");
+            }
+            dataContext.SubmitChanges();
+
+            return personId;
         }
 
         #endregion
