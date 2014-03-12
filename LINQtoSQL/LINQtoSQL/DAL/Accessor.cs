@@ -11,6 +11,8 @@ namespace LINQtoSQL.DAL
     /// </summary>
     public class Accessor
     {
+        //http://www.codeproject.com/Articles/26657/Simple-LINQ-to-SQL-in-C
+
         private static Linq2SQLClassesDataContext dc = new Linq2SQLClassesDataContext();
 
         #region Tables
@@ -190,15 +192,22 @@ namespace LINQtoSQL.DAL
 
         #endregion
 
-        #region Update
-
-        //TODO
-
-        #endregion
-
         #region Delete
 
-        //TODO
+        public static void DeletePerson(Person person)
+        {
+            Linq2SQLClassesDataContext dataContext = new Linq2SQLClassesDataContext();
+
+            var foundPerson = (from p in dataContext.Persons
+                               where p.id == person.id
+                               select p).SingleOrDefault();
+
+            if (foundPerson != null)
+            {
+                dataContext.Persons.DeleteOnSubmit(foundPerson);
+                dataContext.SubmitChanges();
+            }
+        }
 
         #endregion
 

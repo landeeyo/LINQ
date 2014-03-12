@@ -28,8 +28,14 @@ namespace LINQtoSQL
             Accessor.InsertOrUpdatePerson(p);
             p.surname = "Second";
             Accessor.TransactionInsertOrUpdatePerson(p);
-            p.firstname = "throw";
-            Accessor.InsertConsistenceTest(p);
+            #region Consistence test
+
+            //p.firstname = "throw";
+            //Accessor.InsertConsistenceTest(p);
+            
+            #endregion
+            Console.WriteLine("Deleting person...");
+            Accessor.DeletePerson(p);
             Console.ReadLine();
         }
     }
