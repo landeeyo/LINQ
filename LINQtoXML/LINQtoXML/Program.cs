@@ -11,6 +11,15 @@ namespace LINQtoXML
         {
             XMLFacade xf = new XMLFacade();
             Console.WriteLine(xf.GetExampleXML().ToString());
+            Console.WriteLine();
+            Console.ReadLine();
+            Console.WriteLine(xf.GetUserByCityName("New York").ToString());
+            Console.ReadLine();
+            var xml = xf.GetExampleXML();
+            xf.DeleteUserByName(xml, "Steve", "Jobs");
+            Console.WriteLine();
+            Console.WriteLine(xml.ToString());
+            Console.WriteLine();
             Console.ReadLine();
         }
     }
